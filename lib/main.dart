@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:pertemuan8/providers/post_provider.dart';
+import 'package:pertemuan8/providers/photo_provider.dart';
+import 'package:provider/provider.dart';
 import 'pages/posts_page.dart';
 import 'pages/photos_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PostProvider()),
+        ChangeNotifierProvider(create: (_) => PhotoProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,10 +43,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    PostPage(),
-    PhotosPage(),
-  ];
+  final List<Widget> _pages = [PostPage(), PhotosPage()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -52,10 +60,7 @@ class _MainScreenState extends State<MainScreen> {
         onTap: _onItemTapped,
         selectedItemColor: _selectedIndex == 0 ? Colors.indigo : Colors.teal,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Posts',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.article), label: 'Posts'),
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_album),
             label: 'Photos',
